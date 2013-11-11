@@ -7,6 +7,7 @@
 //
 
 #import "MainGameScene.h"
+#import "BackGroundImage.h"
 
 @interface MainGameScene() <SKPhysicsContactDelegate>
 @property (nonatomic) SKSpriteNode      *player;
@@ -16,6 +17,8 @@
 @property (nonatomic) NSTimeInterval    lastbulletUpdateTimeInterval;
 @property (nonatomic) int               monsterDestroyed;
 @property (nonatomic) BOOL              isBossMode;
+@property (nonatomic) SKSpriteNode   *bgImg1;
+@property (nonatomic) SKSpriteNode   *bgImg2;
 @end
 
 static const uint32_t playerCategory            = 0x1 << 0;
@@ -54,10 +57,22 @@ static inline CGPoint rwNormalize (CGPoint a) {
         self.isBossMode = NO;
         
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
-        SKSpriteNode *bgNode = [SKSpriteNode spriteNodeWithImageNamed:@"bg_01.png"];
-        bgNode.size = self.size;
-        bgNode.position = CGPointMake(self.size.width/2, self.size.height/2);
-        [self addChild:bgNode];
+        _bgImg1 = [SKSpriteNode spriteNodeWithImageNamed:@"bg_01.png"];
+        _bgImg1.size = self.size;
+        _bgImg1.anchorPoint = CGPointZero;
+        _bgImg1.position = CGPointMake(0, _bgImg1.size.height);
+        [self addChild:_bgImg1];
+
+        _bgImg2 = [SKSpriteNode spriteNodeWithImageNamed:@"bg_01.png"];
+        _bgImg2.size = self.size;
+        _bgImg2.anchorPoint = CGPointZero;
+        _bgImg2.position = CGPointMake(0, self.size.height);
+        [self addChild:_bgImg2];
+        
+        
+        _bgImg1.position = CGPointZero;
+        _bgImg2.position = CGPointMake(0, _bgImg2.size.height);
+
         
         self.player = [SKSpriteNode spriteNodeWithImageNamed:@"player.png"];
         self.player.position = CGPointMake(self.size.width/2, 100);
@@ -88,6 +103,18 @@ static inline CGPoint rwNormalize (CGPoint a) {
 }
 
 -(void)update:(CFTimeInterval)currentTime {
+    CGPoint currPos = _bgImg1.position;
+    
+    if (currPos.y < -self.size.height) {
+        _bgImg1.position = CGPointZero;
+        currPos = CGPointMake(0, _bgImg2.size.height);
+        _bgImg2.position = currPos;
+        NSLog(@"111111111111");
+    } else {
+        _bgImg1.position = CGPointMake(_bgImg1.position.x, _bgImg1.position.y - 3);
+        _bgImg2.position = CGPointMake(_bgImg2.position.x, _bgImg2.position.y - 3);
+        NSLog(@"22222222222");
+    }
     CFTimeInterval timeSinceLast = currentTime - self.lastUpdateTimeInterval;
     self.lastUpdateTimeInterval = currentTime;
     if (timeSinceLast > 1) {

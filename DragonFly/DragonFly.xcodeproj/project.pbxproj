@@ -43,6 +43,7 @@
 		C03E85DE1830AB3F00F60D68 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = C03E85DC1830AB3F00F60D68 /* spark.png */; };
 		C03E85DF1830AB3F00F60D68 /* spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = C03E85DD1830AB3F00F60D68 /* spark.sks */; };
 		C03E85E21830AC1000F60D68 /* KJPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C03E85E11830AC1000F60D68 /* KJPlayer.m */; };
+		C03E85E51830B64700F60D68 /* BackGroundImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C03E85E41830B64700F60D68 /* BackGroundImage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +112,8 @@
 		C03E85DD1830AB3F00F60D68 /* spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = spark.sks; sourceTree = "<group>"; };
 		C03E85E01830AC1000F60D68 /* KJPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KJPlayer.h; sourceTree = "<group>"; };
 		C03E85E11830AC1000F60D68 /* KJPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJPlayer.m; sourceTree = "<group>"; };
+		C03E85E31830B64700F60D68 /* BackGroundImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BackGroundImage.h; path = Obj/BackGroundImage.h; sourceTree = "<group>"; };
+		C03E85E41830B64700F60D68 /* BackGroundImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BackGroundImage.m; path = Obj/BackGroundImage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,12 +254,14 @@
 		C03E85A41830AA6300F60D68 /* Sprite */ = {
 			isa = PBXGroup;
 			children = (
+				C03E85B21830AA6300F60D68 /* Player */,
 				C03E85A51830AA6300F60D68 /* Enemy */,
+				C03E85E31830B64700F60D68 /* BackGroundImage.h */,
+				C03E85E41830B64700F60D68 /* BackGroundImage.m */,
 				C03E85AE1830AA6300F60D68 /* KJCharacter.h */,
 				C03E85AF1830AA6300F60D68 /* KJCharacter.m */,
 				C03E85B01830AA6300F60D68 /* KJParallaxSprite.h */,
 				C03E85B11830AA6300F60D68 /* KJParallaxSprite.m */,
-				C03E85B21830AA6300F60D68 /* Player */,
 			);
 			path = Sprite;
 			sourceTree = "<group>";
@@ -434,6 +439,7 @@
 				C03E85CC1830AA6300F60D68 /* ViewController.m in Sources */,
 				C03E85C91830AA6300F60D68 /* KJFlyPlayer.m in Sources */,
 				C03E85BD1830AA6300F60D68 /* KJChaseAI.m in Sources */,
+				C03E85E51830B64700F60D68 /* BackGroundImage.m in Sources */,
 				C03E85E21830AC1000F60D68 /* KJPlayer.m in Sources */,
 				C03E85651830A76F00F60D68 /* main.m in Sources */,
 				C03E85BE1830AA6300F60D68 /* KJSpawnAI.m in Sources */,

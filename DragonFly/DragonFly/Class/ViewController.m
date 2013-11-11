@@ -8,17 +8,31 @@
 
 #import "ViewController.h"
 #import "MainGameScene.h"
+@import AVFoundation;
+
+
+@interface ViewController ()
+@property(nonatomic) AVAudioPlayer *bgmPlayer;
+@end
 
 @implementation ViewController
 
-- (void)viewDidLoad
+- (void)viewWillLayoutSubviews
 {
-    [super viewDidLoad];
-
+    [super viewWillLayoutSubviews];
+    
+    NSError *error;
+    NSURL *bgmMusicURL = [[NSBundle mainBundle] URLForResource:@"bgm" withExtension:@"mp3"];
+    self.bgmPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:bgmMusicURL error:&error];
+    self.bgmPlayer.numberOfLoops = -1;
+    [self.bgmPlayer prepareToPlay];
+    [self.bgmPlayer play];
+    
     // Configure the view.
     SKView * skView = (SKView *)self.view;
     skView.showsFPS = YES;
     skView.showsNodeCount = YES;
+    skView.showsDrawCount = YES;
     
     // Create and configure the scene.
     SKScene * scene = [MainGameScene sceneWithSize:skView.bounds.size];
