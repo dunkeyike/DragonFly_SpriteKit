@@ -152,7 +152,7 @@ static inline CGPoint rwNormalize (CGPoint a) {
 }
 
 -(void) addBullet {
-    SKSpriteNode *bullet = [SKSpriteNode spriteNodeWithImageNamed:@"bullet_01_01.png"];
+    SKSpriteNode *bullet = [SKSpriteNode spriteNodeWithImageNamed:@"bullet_01.png"];
     bullet.position = CGPointMake(self.player.position.x, self.player.position.y + 50);
     
     bullet.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(bullet.size.width/2, bullet.size.height/2)];
