@@ -8,17 +8,20 @@
 
 #import "MainGameScene.h"
 #import "BackGroundImage.h"
+#import "KJFlyPlayer.h"
+#import "GameHud.h"
 
 @interface MainGameScene() <SKPhysicsContactDelegate>
-@property (nonatomic) SKSpriteNode      *player;
+@property (nonatomic) KJFlyPlayer       *player;
 @property (nonatomic) NSTimeInterval    lastSpawnTimeInterval;
 @property (nonatomic) NSTimeInterval    lastUpdateTimeInterval;
 @property (nonatomic) NSTimeInterval    lastbulletTimeInterval;
 @property (nonatomic) NSTimeInterval    lastbulletUpdateTimeInterval;
 @property (nonatomic) int               monsterDestroyed;
 @property (nonatomic) BOOL              isBossMode;
-@property (nonatomic) SKSpriteNode   *bgImg1;
-@property (nonatomic) SKSpriteNode   *bgImg2;
+@property (nonatomic) BackGroundImage   *bgImg1;
+@property (nonatomic) BackGroundImage   *bgImg2;
+@property (nonatomic) GameHud           *gameHud;
 @end
 
 static const uint32_t playerCategory            = 0x1 << 0;
@@ -57,16 +60,18 @@ static inline CGPoint rwNormalize (CGPoint a) {
         self.isBossMode = NO;
         
         self.backgroundColor = [SKColor colorWithRed:0.15 green:0.15 blue:0.3 alpha:1.0];
-        _bgImg1 = [SKSpriteNode spriteNodeWithImageNamed:@"bg_01.png"];
+        _bgImg1 = [BackGroundImage spriteNodeWithImageNamed:@"bg_01.png"];
         _bgImg1.size = self.size;
         _bgImg1.anchorPoint = CGPointZero;
         _bgImg1.position = CGPointMake(0, _bgImg1.size.height);
+        _bgImg1.zPosition = -1;
         [self addChild:_bgImg1];
 
-        _bgImg2 = [SKSpriteNode spriteNodeWithImageNamed:@"bg_01.png"];
+        _bgImg2 = [BackGroundImage spriteNodeWithImageNamed:@"bg_01.png"];
         _bgImg2.size = self.size;
         _bgImg2.anchorPoint = CGPointZero;
         _bgImg2.position = CGPointMake(0, self.size.height);
+        _bgImg2.zPosition = -1;
         [self addChild:_bgImg2];
         
         
@@ -74,7 +79,12 @@ static inline CGPoint rwNormalize (CGPoint a) {
         _bgImg2.position = CGPointMake(0, _bgImg2.size.height);
 
         
-        self.player = [SKSpriteNode spriteNodeWithImageNamed:@"player.png"];
+        _gameHud = [GameHud node];
+        [_gameHud setupNode];
+        _gameHud.zPosition = 5;
+        [self addChild:_gameHud];
+        
+        self.player = [KJFlyPlayer spriteNodeWithImageNamed:@"player.png"];
         self.player.position = CGPointMake(self.size.width/2, 100);
         self.player.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(self.player.size.width/4, self.player.size.height/4)];
         self.player.physicsBody.dynamic = YES;
@@ -91,11 +101,7 @@ static inline CGPoint rwNormalize (CGPoint a) {
     return self;
 }
 
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    
- 
-    
-}
+
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     CGPoint location = [touch locationInNode:self];
@@ -109,11 +115,9 @@ static inline CGPoint rwNormalize (CGPoint a) {
         _bgImg1.position = CGPointZero;
         currPos = CGPointMake(0, _bgImg2.size.height);
         _bgImg2.position = currPos;
-        NSLog(@"111111111111");
     } else {
         _bgImg1.position = CGPointMake(_bgImg1.position.x, _bgImg1.position.y - 3);
         _bgImg2.position = CGPointMake(_bgImg2.position.x, _bgImg2.position.y - 3);
-        NSLog(@"22222222222");
     }
     CFTimeInterval timeSinceLast = currentTime - self.lastUpdateTimeInterval;
     self.lastUpdateTimeInterval = currentTime;

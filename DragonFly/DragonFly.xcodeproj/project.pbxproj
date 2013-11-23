@@ -44,6 +44,7 @@
 		C03E85DF1830AB3F00F60D68 /* spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = C03E85DD1830AB3F00F60D68 /* spark.sks */; };
 		C03E85E21830AC1000F60D68 /* KJPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = C03E85E11830AC1000F60D68 /* KJPlayer.m */; };
 		C03E85E51830B64700F60D68 /* BackGroundImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C03E85E41830B64700F60D68 /* BackGroundImage.m */; };
+		C03E85E91830D69200F60D68 /* GameHud.m in Sources */ = {isa = PBXBuildFile; fileRef = C03E85E81830D69200F60D68 /* GameHud.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +115,8 @@
 		C03E85E11830AC1000F60D68 /* KJPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KJPlayer.m; sourceTree = "<group>"; };
 		C03E85E31830B64700F60D68 /* BackGroundImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BackGroundImage.h; path = Obj/BackGroundImage.h; sourceTree = "<group>"; };
 		C03E85E41830B64700F60D68 /* BackGroundImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BackGroundImage.m; path = Obj/BackGroundImage.m; sourceTree = "<group>"; };
+		C03E85E71830D69200F60D68 /* GameHud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameHud.h; path = HUD/GameHud.h; sourceTree = "<group>"; };
+		C03E85E81830D69200F60D68 /* GameHud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GameHud.m; path = HUD/GameHud.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,6 +257,7 @@
 		C03E85A41830AA6300F60D68 /* Sprite */ = {
 			isa = PBXGroup;
 			children = (
+				C03E85E61830D65500F60D68 /* HUD */,
 				C03E85B21830AA6300F60D68 /* Player */,
 				C03E85A51830AA6300F60D68 /* Enemy */,
 				C03E85E31830B64700F60D68 /* BackGroundImage.h */,
@@ -332,6 +336,15 @@
 			path = effect;
 			sourceTree = "<group>";
 		};
+		C03E85E61830D65500F60D68 /* HUD */ = {
+			isa = PBXGroup;
+			children = (
+				C03E85E71830D69200F60D68 /* GameHud.h */,
+				C03E85E81830D69200F60D68 /* GameHud.m */,
+			);
+			name = HUD;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -379,6 +392,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = Dunkey;
 				TargetAttributes = {
+					C03E85521830A76F00F60D68 = {
+						DevelopmentTeam = 5WL7T89SFN;
+					};
 					C03E857A1830A76F00F60D68 = {
 						TestTargetID = C03E85521830A76F00F60D68;
 					};
@@ -442,6 +458,7 @@
 				C03E85E51830B64700F60D68 /* BackGroundImage.m in Sources */,
 				C03E85E21830AC1000F60D68 /* KJPlayer.m in Sources */,
 				C03E85651830A76F00F60D68 /* main.m in Sources */,
+				C03E85E91830D69200F60D68 /* GameHud.m in Sources */,
 				C03E85BE1830AA6300F60D68 /* KJSpawnAI.m in Sources */,
 				C03E85C61830AA6300F60D68 /* KJSmallEnemyCharacter.m in Sources */,
 				C03E85BC1830AA6300F60D68 /* KJArtificialIntelligence.m in Sources */,
@@ -580,6 +597,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DragonFly/DragonFly-Prefix.pch";
 				INFOPLIST_FILE = "DragonFly/DragonFly-Info.plist";
@@ -594,6 +612,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DragonFly/DragonFly-Prefix.pch";
 				INFOPLIST_FILE = "DragonFly/DragonFly-Info.plist";
