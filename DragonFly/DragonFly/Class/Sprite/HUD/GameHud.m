@@ -9,14 +9,14 @@
 #import "GameHud.h"
 
 @implementation GameHud
-
+@synthesize lblScore;
 - (void) setupNode {
-    SKLabelNode *label = [SKLabelNode labelNodeWithFontNamed:@"Copperplate"];
-    label.text = @"Score";
-    label.fontColor = [SKColor redColor];
-    label.fontSize = 16;
-    label.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
-    label.position = CGPointMake(200, 550);
-    [self addChild:label];
+    lblScore = [SKLabelNode labelNodeWithFontNamed:@"Copperplate"];
+    lblScore.text = @"Score";
+    lblScore.fontColor = [SKColor redColor];
+    lblScore.fontSize = 16;
+    lblScore.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
+    lblScore.position = CGPointMake(200, 550);
+    [self addChild:lblScore];
 }
 @end

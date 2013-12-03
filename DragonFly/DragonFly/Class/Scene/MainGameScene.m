@@ -22,11 +22,13 @@
 @property (nonatomic) BackGroundImage   *bgImg1;
 @property (nonatomic) BackGroundImage   *bgImg2;
 @property (nonatomic) GameHud           *gameHud;
+@property (nonatomic, assign) NSInteger intScore;
 @end
 
 static const uint32_t playerCategory            = 0x1 << 0;
 static const uint32_t monsterCategory           = 0x1 << 1;
 static const uint32_t bulletCategory            = 0x1 << 2;
+static const uint32_t bossCategory				= 0x1 << 3;
 
 // 벡터 계산 인라인 함수
 static inline CGPoint rwAdd(CGPoint a, CGPoint b) {
@@ -89,7 +91,7 @@ static inline CGPoint rwNormalize (CGPoint a) {
         self.player.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(self.player.size.width/4, self.player.size.height/4)];
         self.player.physicsBody.dynamic = YES;
         self.player.physicsBody.categoryBitMask  = playerCategory;
-        self.player.physicsBody.contactTestBitMask  = monsterCategory;
+        self.player.physicsBody.contactTestBitMask  = monsterCategory | bossCategory;
         self.player.physicsBody.collisionBitMask = 0;
         self.player.physicsBody.usesPreciseCollisionDetection = YES;
         
@@ -97,6 +99,8 @@ static inline CGPoint rwNormalize (CGPoint a) {
         
         self.physicsWorld.gravity = CGVectorMake(0,0);
         self.physicsWorld.contactDelegate = self;
+		
+		_intScore = 0;
     }
     return self;
 }
@@ -121,7 +125,7 @@ static inline CGPoint rwNormalize (CGPoint a) {
     }
     CFTimeInterval timeSinceLast = currentTime - self.lastUpdateTimeInterval;
     self.lastUpdateTimeInterval = currentTime;
-    if (timeSinceLast > 1) {
+    if (timeSinceLast > 0.5) {
         timeSinceLast = 1.0 / 60.0;
         self.lastUpdateTimeInterval = currentTime;
     }
@@ -133,7 +137,7 @@ static inline CGPoint rwNormalize (CGPoint a) {
     self.lastSpawnTimeInterval += timeSinceLast;
     self.lastbulletTimeInterval += timeSinceLast;
     
-    if (self.lastSpawnTimeInterval > 1) {
+    if (self.lastSpawnTimeInterval > 0.5) {
         self.lastSpawnTimeInterval = 0;
         if (self.isBossMode) {
             [self addBoss];
@@ -189,7 +193,7 @@ static inline CGPoint rwNormalize (CGPoint a) {
     bullet.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(bullet.size.width/2, bullet.size.height/2)];
     bullet.physicsBody.dynamic = YES;
     bullet.physicsBody.categoryBitMask  = bulletCategory;
-    bullet.physicsBody.contactTestBitMask  = monsterCategory;
+    bullet.physicsBody.contactTestBitMask  = monsterCategory | bossCategory;
     bullet.physicsBody.collisionBitMask = 0;
     bullet.physicsBody.usesPreciseCollisionDetection = YES;
     
@@ -214,7 +218,7 @@ static inline CGPoint rwNormalize (CGPoint a) {
     
     monster.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:monster.size];
     monster.physicsBody.dynamic = YES;
-    monster.physicsBody.categoryBitMask = monsterCategory;
+    monster.physicsBody.categoryBitMask = bossCategory;
     monster.physicsBody.contactTestBitMask = bulletCategory | playerCategory;
     monster.physicsBody.collisionBitMask = 0;
     
@@ -238,9 +242,11 @@ static inline CGPoint rwNormalize (CGPoint a) {
 }
 -(void) collisionWithBullet:(SKSpriteNode *)bullet fromMonster:(SKSpriteNode *)monster {
     self.monsterDestroyed++;
-    if (self.monsterDestroyed > 4) {
+    if (self.monsterDestroyed > 10) {
         self.isBossMode = YES;
     }
+	_intScore += 10;
+	_gameHud.lblScore.text = [NSString stringWithFormat:@"SCORE : %d", _intScore];
     NSString *myParticlePath = [[NSBundle mainBundle] pathForResource:@"spark" ofType:@"sks"];
     SKEmitterNode *myParticle = [NSKeyedUnarchiver unarchiveObjectWithFile:myParticlePath];
     myParticle.particlePosition = bullet.position;
@@ -253,6 +259,23 @@ static inline CGPoint rwNormalize (CGPoint a) {
     [bullet removeFromParent];
     [monster removeFromParent];
 }
+
+-(void) collisionWithBullet:(SKSpriteNode *)bullet fromBoss:(SKSpriteNode *)boss {
+	_intScore += 100;
+	_gameHud.lblScore.text = [NSString stringWithFormat:@"SCORE : %d", _intScore];
+    NSString *myParticlePath = [[NSBundle mainBundle] pathForResource:@"spark" ofType:@"sks"];
+    SKEmitterNode *myParticle = [NSKeyedUnarchiver unarchiveObjectWithFile:myParticlePath];
+    myParticle.particlePosition = bullet.position;
+	//    myParticle.particleBirthRate = 5;
+    [self addChild:myParticle];
+	//    myParticle.particleLifetime = 0.5;
+    [self performSelector:@selector(removeSpark) withObject:Nil afterDelay:0.5];
+	//    [self removeSpark];
+    [self runAction:[SKAction playSoundFileNamed:@"baby_dragon_die.wav" waitForCompletion:NO]];
+    [bullet removeFromParent];
+    [boss removeFromParent];
+}
+
 - (void) removeSpark {
     for (SKEmitterNode *sks in [self children]) {
         if ([sks isKindOfClass:[SKEmitterNode class]]) {
@@ -268,7 +291,7 @@ static inline CGPoint rwNormalize (CGPoint a) {
 
 -(void) didBeginContact:(SKPhysicsContact *)contact {
     SKPhysicsBody *firstBody, *secondBody;
-    
+    NSLog(@"%s", __FUNCTION__);
     if (contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask) {
         firstBody = contact.bodyA;
         secondBody = contact.bodyB;
@@ -286,6 +309,11 @@ static inline CGPoint rwNormalize (CGPoint a) {
     if ((firstBody.categoryBitMask & monsterCategory) != 0 &&
         (secondBody.categoryBitMask & bulletCategory) != 0) {
             [self collisionWithBullet:(SKSpriteNode*)firstBody.node fromMonster:(SKSpriteNode *)secondBody.node];
+    }
+	
+	if ((firstBody.categoryBitMask & bossCategory) != 0 &&
+        (secondBody.categoryBitMask & bulletCategory) != 0) {
+		[self collisionWithBullet:(SKSpriteNode*)firstBody.node fromMonster:(SKSpriteNode *)secondBody.node];
     }
 }
 

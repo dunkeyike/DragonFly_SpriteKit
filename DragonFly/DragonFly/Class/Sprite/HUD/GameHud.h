@@ -8,6 +8,9 @@
 
 #import <SpriteKit/SpriteKit.h>
 
-@interface GameHud : SKNode
+@interface GameHud : SKNode {
+	
+}
+@property (nonatomic, strong) SKLabelNode	*lblScore;
 - (void) setupNode;
 @end
